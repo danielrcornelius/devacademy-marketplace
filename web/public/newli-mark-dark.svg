@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" width="120" height="140">
+  <title>Newli logomark</title>
+  <desc>Newli n/li mark: coral accent on deep night background</desc>
+  <rect x="0" y="0" width="120" height="140" fill="#1C1040"/>
+  <g transform="translate(12, 8)">
+    <line x1="22" y1="40" x2="22" y2="98" stroke="#AFA9EC" stroke-width="11" stroke-linecap="round"/>
+    <path d="M22 40 Q22 20 54 20 Q86 20 86 50" fill="none" stroke="#AFA9EC" stroke-width="11" stroke-linecap="round"/>
+    <path d="M86 50 L86 90 Q86 108 62 114" fill="none" stroke="#D85A30" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

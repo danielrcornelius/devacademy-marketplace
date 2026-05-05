@@ -1,28 +1,100 @@
-# Skillful Marketplace
+# Newli Marketplace
 
-This repo is a starter pack for a non-engineer, who wants to use cursor to build a full-stack application, e.g. a marketplace app.
+Athletics-focused marketplace starter: **Next.js (TypeScript)**, **FastAPI**, and **PostgreSQL** — coaches and students discover each other by sport, goals, and story-driven profiles.
 
-## Getting Started
+## What ships in this repo
 
-![Fork this repo](images/fork-me.png)
+- `web/` — Next.js App Router UI (home, coach directory with filters, coach detail).
+- `api/` — FastAPI service with health check, sports catalog, coach profiles, and student goals.
+- `api/alembic/` — Initial schema migration plus seed sports and demo coaches/goals.
 
-0. Install git & install cursor
+Local development follows the project skill: **no Docker** for running Postgres, the API, or the web app.
 
-1. Fork this repo (↗️) to your own github
+## Prerequisites (Windows)
 
-2. From your own repo, copy the Clone URL (↗️)
+1. **Node.js** with npm (LTS recommended).
+2. **Python 3.12+**  
+   Example: `winget install Python.Python.3.12`
+3. **PostgreSQL** (service running on `localhost:5432`)  
+   Example: `winget install PostgreSQL.PostgreSQL.17`  
+   Complete the installer’s prompts (remember the password you set for the `postgres` superuser).
 
-3. Open a terminal (on mac: Cmd + Space and type 'Terminal') and run:
-```bash
-mkdir ~/Dev
-cd ~/Dev
-git clone <url>
+After installation, ensure the database service is running (Services app → PostgreSQL, or the Stack Builder / pgAdmin guidance from the installer).
+
+## One-time database setup
+
+Using **SQL Shell (psql)** or any client, connect as the `postgres` superuser and run:
+
+```sql
+CREATE DATABASE newli_marketplace;
 ```
 
-4. Open cursor and open the repo (File -> Open Folder)
+Create a login that matches your connection string, or reuse `postgres` and align the password with `api/.env`.
 
-5. Try out your first cursor command! In the chat type "/" then start to type the word t.e.a.c.h, press enter to get the command `teach-me`, then ask any question that comes to mind. Example:
-    - `/teach-me what are the cursor commands in this repo?`
+## Configure environment
 
-5. Build! example:
-    - `/plan I want to build a beautiful marketplace to sell my <really cool t-shirts|hamsters|artwork|surf boards|shoes and/or AI data infrastructure`
+Copy examples and adjust credentials:
+
+```powershell
+copy api\.env.example api\.env
+copy web\.env.example web\.env
+```
+
+`api/.env` keys:
+
+- `DATABASE_URL` — e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/newli_marketplace`
+- `ALLOWED_ORIGINS` — include `http://localhost:3000` for browser calls from the Next dev server
+
+`web/.env`:
+
+- `NEXT_PUBLIC_API_URL` — default `http://localhost:8000`
+
+## Run the API
+
+```powershell
+cd api
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+alembic upgrade head
+uvicorn app.main:app --reload --port 8000
+```
+
+- Interactive docs: `http://localhost:8000/docs`
+- Health: `http://localhost:8000/health`
+
+## Run the web app
+
+```powershell
+cd web
+npm install
+npm run dev
+```
+
+Open `http://localhost:3000` — the home page calls `/health` and lists counts when the API and database are reachable.
+
+## Smoke test checklist
+
+1. `GET http://localhost:8000/health` returns `{"status":"ok"}`.
+2. `GET http://localhost:8000/sports` returns seeded sports (swimming, triathlon, mountain biking, running).
+3. `GET http://localhost:8000/coaches` returns three demo coaches.
+4. Home page shows **API connected** with non-zero counts.
+5. `/coaches` renders cards; filters by `sport_slug` and text `q` work.
+
+## Cursor starter commands
+
+Try `/teach-me` or `/plan` from the `.cursor/commands` folder for guided workflows.
+
+### Anthropic `frontend-design` skill (optional)
+
+This repo vendors the skill at [`.cursor/skills/frontend-design/SKILL.md`](.cursor/skills/frontend-design/SKILL.md). To refresh or install via the CLI (non-interactive):
+
+```powershell
+npx --yes skills add https://github.com/anthropics/skills --skill frontend-design -y
+```
+
+If the installer still prompts for targets, choose **Cursor** so it lands under `.cursor/skills/`.
+
+## Optional: deploy to GCP
+
+See `.cursor/skills/deploy-to-gcp-serverless/SKILL.md` — cloud deploy uses container images for Cloud Run; that is separate from the local “no Docker” workflow above.
