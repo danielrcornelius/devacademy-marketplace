@@ -131,10 +131,10 @@ export default async function CoachesPage({ searchParams }: { searchParams: Sear
       ) : null}
 
       {!error && coaches.length > 0 ? (
-        <ul className="mt-12 grid gap-7 md:grid-cols-2">
-          {coaches.map((c, idx) => (
-            <li key={c.id} className={idx % 2 === 1 ? "md:translate-y-4" : ""}>
-              <Link href={`/coaches/${c.id}`} className="coach-card group relative h-full overflow-hidden p-6">
+        <ul className="mt-12 grid gap-7 md:grid-cols-2 md:items-start">
+          {coaches.map((c) => (
+            <li key={c.id}>
+              <Link href={`/coaches/${c.id}`} className="coach-card group relative block overflow-hidden p-6">
                 <div className="relative flex flex-wrap gap-2">
                   {c.sports.map((s) => (
                     <span key={s.slug} className="badge-sport uppercase tracking-wider">
@@ -168,7 +168,7 @@ export default async function CoachesPage({ searchParams }: { searchParams: Sear
           ))}
 
           {/* Ghost "your slot" card — always shown to invite coaches */}
-          <li className={coaches.length % 2 === 1 ? "md:translate-y-4" : ""}>
+          <li>
             <Link
               href="/coaches/join"
               className="group flex h-full flex-col items-start justify-between rounded-[var(--radius-lg)] border border-dashed border-[var(--border-default)] p-6 transition hover:border-[var(--color-purple-mid)] hover:bg-[var(--bg-surface-tinted)]"

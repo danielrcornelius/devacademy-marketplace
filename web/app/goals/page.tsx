@@ -131,9 +131,9 @@ export default async function GoalsPage({ searchParams }: { searchParams: Search
       )}
 
       {!error && goals.length > 0 && (
-        <ul className="mt-12 grid gap-7 md:grid-cols-2">
-          {goals.map((g, idx) => (
-            <li key={g.id} className={idx % 2 === 1 ? "md:translate-y-4" : ""}>
+        <ul className="mt-12 grid gap-7 md:grid-cols-2 md:items-start">
+          {goals.map((g) => (
+            <li key={g.id}>
               <div className="surface-panel flex h-full flex-col p-6">
                 <div className="flex flex-wrap items-center gap-2">
                   {g.sport && (
@@ -160,7 +160,7 @@ export default async function GoalsPage({ searchParams }: { searchParams: Search
           ))}
 
           {/* Ghost "post your goal" card */}
-          <li className={goals.length % 2 === 1 ? "md:translate-y-4" : ""}>
+          <li>
             <Link
               href="/goals/new"
               className="group flex h-full flex-col items-start justify-between rounded-[var(--radius-lg)] border border-dashed border-[var(--border-default)] p-6 transition hover:border-[var(--color-purple-mid)] hover:bg-[var(--bg-surface-tinted)]"

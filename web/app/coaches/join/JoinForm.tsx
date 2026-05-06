@@ -145,7 +145,7 @@ export function JoinForm({ sports }: { sports: Sport[] }) {
     const needsLocation = s2.coaching_format === "in_person" || s2.coaching_format === "both";
     const needsTimezone = s2.coaching_format === "remote" || s2.coaching_format === "both";
 
-    const body: CoachCreate = {
+    const body = {
       // Omit email/display_name when JWT is present — API uses the authenticated user
       ...(sessionLocked ? {} : {
         email: s1.email.trim(),
@@ -161,7 +161,7 @@ export function JoinForm({ sports }: { sports: Sport[] }) {
       ...(needsLocation && s2.location_city.trim() ? { location_city: s2.location_city.trim() } : {}),
       ...(needsLocation && s2.location_region.trim() ? { location_region: s2.location_region.trim() } : {}),
       ...(s2.website_url.trim() ? { website_url: s2.website_url.trim() } : {}),
-    };
+    } as CoachCreate;
 
     try {
       const coach = await createCoach(body, getToken() ?? undefined);
